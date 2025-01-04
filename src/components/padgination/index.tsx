@@ -58,13 +58,14 @@ const Pagination: FC<PaginationProps> = ({
   };
 
   return (
-    <div className="flex flex-wrap items-center justify-between px-4 py-2 border-t space-y-2 md:space-y-0">
+    <div className="flex flex-wrap items-center justify-between px-4 py-2 border-t space-y-4 md:space-y-0">
+      {/* Rows per page section */}
       <div className="flex items-center w-full md:w-auto space-x-2">
         <span className="text-sm">Rows per page:</span>
         <select
           value={rowsPerPage}
           onChange={(e) => onRowsPerPageChange?.(parseInt(e.target.value))}
-          className="border rounded px-2 py-1 text-sm"
+          className="border rounded px-2 py-1 text-sm w-24"
         >
           {rowsPerPageOptions.map((option) => (
             <option key={option} value={option}>
@@ -74,18 +75,19 @@ const Pagination: FC<PaginationProps> = ({
         </select>
       </div>
 
+      {/* Pagination buttons section */}
       <div className="flex items-center w-full md:w-auto justify-center space-x-1">
         <button
           onClick={() => handlePageChange(1)}
           disabled={currentPage === 1}
-          className="px-3 py-1 border rounded disabled:opacity-50 text-sm border-[#E5E5E5]"
+          className="px-3 py-1 border rounded disabled:opacity-50 text-sm border-[#E5E5E5] w-10"
         >
           {"|<"}
         </button>
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-3 py-1 border rounded disabled:opacity-50 text-sm border-[#E5E5E5]"
+          className="px-3 py-1 border rounded disabled:opacity-50 text-sm border-[#E5E5E5] w-10"
         >
           {"<"}
         </button>
@@ -96,12 +98,12 @@ const Pagination: FC<PaginationProps> = ({
               onClick={() => handlePageChange(page)}
               className={`px-3 py-1 border border-[#E5E5E5] rounded ${
                 page === currentPage ? "bg-[#8158F3] text-white" : ""
-              } text-sm`}
+              } text-sm w-10`}
             >
               {page}
             </button>
           ) : (
-            <span key={index} className="px-3 py-1 text-sm">
+            <span key={index} className="px-3 py-1 text-sm w-10">
               {page}
             </span>
           )
@@ -109,14 +111,14 @@ const Pagination: FC<PaginationProps> = ({
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="px-3 py-1 border rounded disabled:opacity-50 text-sm border-[#E5E5E5]"
+          className="px-3 py-1 border rounded disabled:opacity-50 text-sm border-[#E5E5E5] w-10"
         >
           {">"}
         </button>
         <button
           onClick={() => handlePageChange(totalPages)}
           disabled={currentPage === totalPages}
-          className="px-3 py-1 border rounded disabled:opacity-50 text-sm border-[#E5E5E5]"
+          className="px-3 py-1 border rounded disabled:opacity-50 text-sm border-[#E5E5E5] w-10"
         >
           {">|"}
         </button>

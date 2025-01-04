@@ -15,7 +15,6 @@ export default function Users() {
   } = useUsers();
 
   if (isFetching) return <Loader />;
-  console.log(data);
 
   return (
     <>

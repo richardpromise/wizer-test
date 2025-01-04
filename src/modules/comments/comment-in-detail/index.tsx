@@ -66,7 +66,7 @@ const CommentDetails: React.FC = () => {
       <main className="max-w-4xl mx-auto px-6 py-10">
         <section className="bg-white rounded-lg shadow-md p-6 mb-8">
           <h2 className="text-2xl font-semibold text-indigo-600 border-b pb-2 mb-4">
-            Comment Metadata
+            Head
           </h2>
           <p className="text-lg">
             <span className="font-medium">Comment ID:</span>{" "}
@@ -85,7 +85,7 @@ const CommentDetails: React.FC = () => {
 
         <section className="bg-white rounded-lg shadow-md p-6 mb-8">
           <h2 className="text-2xl font-semibold text-indigo-600 border-b pb-2 mb-4">
-            Comment Content
+            Comment
           </h2>
           <h3 className="text-xl font-medium text-gray-800 mb-2">
             {updatedComment ? updatedComment.name : name}
@@ -95,12 +95,6 @@ const CommentDetails: React.FC = () => {
           </p>
         </section>
       </main>
-
-      <footer className="bg-gray-200 py-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-gray-600">&copy; 2024 Comment Details Page</p>
-        </div>
-      </footer>
 
       {modalConfig && (
         <EditCommentModal

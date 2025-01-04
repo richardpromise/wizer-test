@@ -2,7 +2,7 @@ import React, { ButtonHTMLAttributes } from "react";
 import clsx from "clsx";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  label: string;
+  label?: string;
   onClick?: () => void;
   variant?: "primary" | "secondary";
   size?: "small" | "medium" | "large";
