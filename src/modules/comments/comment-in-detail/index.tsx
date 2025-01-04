@@ -6,6 +6,10 @@ import Loader from "../../../components/loader";
 import EditCommentModal from "../../../components/modal/comments/edit-comment";
 import { IComment } from "../../../interface/comment";
 import { useModal } from "../../../hooks/useModal";
+import { motion } from "framer-motion";
+import { AiFillEdit } from "react-icons/ai";
+
+import { MdKeyboardBackspace } from "react-icons/md";
 
 const CommentDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -19,28 +23,37 @@ const CommentDetails: React.FC = () => {
   const { isOpen, closeModal, modalConfig, openModal } = useModal();
   const [formData, setFormData] = useState<IComment>(commentDetails);
 
-  const { id, name, email, body, postId } = commentDetails;
+  const { id, name, email, body } = commentDetails;
 
   if (isCommentLoading || updatingComment) {
     return <Loader />;
   }
 
   return (
-    <div className="h-full bg-gray-100 text-gray-900 overflow-y-scroll">
+    <motion.div
+      className="h-full  text-gray-900 overflow-y-scroll"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      {/* Header Section */}
       <header className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-6">
-        <div className="max-w-4xl mx-auto px-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="max-w-4xl mx-auto px-6 flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold">Comment Details</h1>
-            <p className="text-lg italic">Post ID: {postId}</p>
+            <h1 className="text-4xl font-semibold">Comment Details</h1>
           </div>
-          <div className="flex gap-4">
+          <div className="flex flex-col-reverse md:flex md:flex-row gap-2">
             <Button
+              icon={<AiFillEdit size={20} />}
               label="Edit"
               variant="primary"
               style={{
-                backgroundColor: "#534e61",
+                background: "linear-gradient(90deg, #8159F3, #5C3DB7)",
                 borderRadius: "8px",
                 padding: "0.5rem 1.5rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
               onClick={() =>
                 openModal({
@@ -49,13 +62,17 @@ const CommentDetails: React.FC = () => {
               }
             />
             <Button
+              icon={<MdKeyboardBackspace size={20} />}
               label="Back"
               variant="secondary"
               style={{
-                backgroundColor: "#E5E7EB",
-                color: "#374151",
+                backgroundColor: "#D6C8F7",
+                color: "white",
                 borderRadius: "8px",
                 padding: "0.5rem 1.5rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
               onClick={() => navigate(-1)}
             />
@@ -63,8 +80,14 @@ const CommentDetails: React.FC = () => {
         </div>
       </header>
 
+      {/* Main Content Section */}
       <main className="max-w-4xl mx-auto px-6 py-10">
-        <section className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <motion.section
+          className="bg-white rounded-lg shadow-lg p-6 mb-8"
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
           <h2 className="text-2xl font-semibold text-indigo-600 border-b pb-2 mb-4">
             Head
           </h2>
@@ -81,9 +104,14 @@ const CommentDetails: React.FC = () => {
               {updatedComment ? updatedComment.email : email}
             </a>
           </p>
-        </section>
+        </motion.section>
 
-        <section className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <motion.section
+          className="bg-white rounded-lg shadow-lg p-6 mb-8"
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
           <h2 className="text-2xl font-semibold text-indigo-600 border-b pb-2 mb-4">
             Comment
           </h2>
@@ -93,9 +121,10 @@ const CommentDetails: React.FC = () => {
           <p className="whitespace-pre-line text-gray-700">
             {updatedComment ? updatedComment.body : body}
           </p>
-        </section>
+        </motion.section>
       </main>
 
+      {/* Edit Comment Modal */}
       {modalConfig && (
         <EditCommentModal
           isOpen={isOpen}
@@ -110,7 +139,7 @@ const CommentDetails: React.FC = () => {
           }}
         />
       )}
-    </div>
+    </motion.div>
   );
 };
 
