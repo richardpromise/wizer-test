@@ -29,12 +29,11 @@ const UserDetails: React.FC = () => {
     return <Loader />;
   }
 
-  // Animation variants for cards
   const cardVariants = {
     initial: (i: number) => ({
       opacity: 0,
       y: 50 * i,
-      rotate: i % 2 === 0 ? -5 : 5, // Alternate rotation
+      rotate: i % 2 === 0 ? -5 : 5,
     }),
     animate: {
       opacity: 1,
@@ -58,6 +57,7 @@ const UserDetails: React.FC = () => {
           </h1>
           <div className="flex flex-col-reverse md:flex md:flex-row gap-2">
             <Button
+              className="hover:scale-100"
               icon={<AiFillEdit size={20} />}
               label="Edit"
               variant="primary"

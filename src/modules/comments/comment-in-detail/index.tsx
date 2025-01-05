@@ -36,7 +36,6 @@ const CommentDetails: React.FC = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Header Section */}
       <header className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-6">
         <div className="max-w-4xl mx-auto px-6 flex items-center justify-between">
           <div>
@@ -80,7 +79,6 @@ const CommentDetails: React.FC = () => {
         </div>
       </header>
 
-      {/* Main Content Section */}
       <main className="max-w-4xl mx-auto px-6 py-10">
         <motion.section
           className="bg-white rounded-lg shadow-lg p-6 mb-8"
@@ -124,7 +122,6 @@ const CommentDetails: React.FC = () => {
         </motion.section>
       </main>
 
-      {/* Edit Comment Modal */}
       {modalConfig && (
         <EditCommentModal
           isOpen={isOpen}

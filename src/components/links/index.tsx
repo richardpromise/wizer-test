@@ -7,7 +7,6 @@ interface Props {
   inactiveIcon: string;
   path: string;
   setCloseMenu?: (value: boolean) => void;
-  smallNav?: boolean;
 }
 
 export default function SideBarLinks({
@@ -21,7 +20,13 @@ export default function SideBarLinks({
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isActive = location.pathname === path;
+  const isExactActive = location.pathname === path;
+  const isDynamicActive =
+    !isExactActive &&
+    ((path === "/users" && location.pathname.startsWith("/users/")) ||
+      (path === "/" && location.pathname.startsWith("/comment/")));
+
+  const isActive = isExactActive || isDynamicActive;
 
   const handleNavigation = () => {
     navigate(path);

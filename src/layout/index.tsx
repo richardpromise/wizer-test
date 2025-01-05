@@ -63,7 +63,6 @@ export default function Dashboard() {
   return (
     <>
       <Header handleNewEntry={handleNewEntry} />
-
       <div className="flex h-[calc(100dvh-148px)] py-2 bg-[#ffff]  px-4">
         {!isSmallScreen && (
           <div className="w-[18%] ">

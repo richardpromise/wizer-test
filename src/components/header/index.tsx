@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CiCirclePlus } from "react-icons/ci";
 import { FiMenu, FiX } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
 import useIsSmallScreen from "../../hooks/useSmalllScreen";
 import Button from "../button";
 import activeCommentIcon from "../../assets/icons/comments-icon.svg";
@@ -9,6 +10,7 @@ import inActiveCommentIcon from "../../assets/icons/inactive-comment.svg";
 import inActiveProfileIcon from "../../assets/icons/profile.svg";
 import activeProfileIcon from "../../assets/icons/active-profile.svg";
 import SideBarLinks from "../links";
+import { useLocation } from "react-router-dom";
 
 export interface IRoutes {
   label: string;
@@ -35,9 +37,36 @@ export const routes: IRoutes[] = [
 export default function Header({ handleNewEntry }: any) {
   const isSmallScreen = useIsSmallScreen();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { pathname } = useLocation();
+
+  const hiddenButtonPaths = ["/comment/:id", "/users/:id"];
+  const shouldHideButton = hiddenButtonPaths.some((pattern) => {
+    const regex = new RegExp(`^${pattern.replace(":id", "[^/]+")}$`);
+    return regex.test(pathname);
+  });
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
+  };
+
+  // Animation Variants
+  const sidebarVariants = {
+    hidden: { x: "-100%" },
+    visible: {
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 70,
+        damping: 20,
+        staggerChildren: 0.1,
+      },
+    },
+    exit: { x: "-100%", transition: { duration: 0.2 } },
+  };
+
+  const linkVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.3 } },
   };
 
   return (
@@ -55,41 +84,56 @@ export default function Header({ handleNewEntry }: any) {
         </div>
       </div>
 
-      <div className="flex flex-row-reverse w-full items-center justify-between bg-[#ffff] h-[50px] px-4 py-2 border-t border-gray-200">
-        <Button
-          label="New Entry"
-          size="small"
-          onClick={handleNewEntry}
-          icon={<CiCirclePlus size={18} />}
-          iconPosition="left"
-        />
+      <div
+        className={`flex flex-row-reverse w-full items-center  ${
+          shouldHideButton ? "justify-end" : "justify-between"
+        }  bg-[#ffff] h-[50px] px-4 py-2 border-t border-gray-200`}
+      >
+        {!shouldHideButton && (
+          <Button
+            label="New Entry"
+            size="small"
+            onClick={handleNewEntry}
+            icon={<CiCirclePlus size={18} />}
+            iconPosition="left"
+          />
+        )}
 
         {isSmallScreen && (
           <button
             onClick={toggleMenu}
             className="text-gray-700 hover:text-blue-500 focus:outline-none"
           >
-            {isMenuOpen ? <FiX size={34} /> : <FiMenu size={24} />}
+            {isMenuOpen ? <FiX size={34} /> : <FiMenu size={34} />}
           </button>
         )}
       </div>
 
-      {isSmallScreen && isMenuOpen && (
-        <div className="absolute top-[148px] left-0 w-full bg-white shadow-lg border-t border-gray-200 z-20">
-          <div className="flex flex-col gap-2 w-full p-6">
-            {routes.map((route, i) => (
-              <SideBarLinks
-                key={i}
-                activeIcon={route.activeIcon}
-                inactiveIcon={route.inactiveIcon}
-                label={route.label}
-                path={route.path}
-                setCloseMenu={setIsMenuOpen}
-              />
-            ))}
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {isSmallScreen && isMenuOpen && (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={sidebarVariants}
+            className="absolute top-[148px] left-0 w-full bg-white shadow-lg border-t border-gray-200 z-20 h-[77svh]"
+          >
+            <motion.div className="flex flex-col gap-2 w-full p-6">
+              {routes.map((route, i) => (
+                <motion.div key={i} variants={linkVariants}>
+                  <SideBarLinks
+                    activeIcon={route.activeIcon}
+                    inactiveIcon={route.inactiveIcon}
+                    label={route.label}
+                    path={route.path}
+                    setCloseMenu={setIsMenuOpen}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
