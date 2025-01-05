@@ -123,7 +123,7 @@ export default function UserTable({ filteredData, setOpenTreat }: any) {
               onClick={() => navigate(`/users/${rowId}`)}
               className="text-[#121212] font-medium tracking-[-0.2px] leading-6 capitalize flex justify-start items-center px-2 cursor-pointer"
             >
-              <CgMoreVerticalO color="#8158F3" />
+              <CgMoreVerticalO size={25} color="#8158F3" />
             </span>
           );
         },

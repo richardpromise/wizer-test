@@ -1,6 +1,6 @@
 import { renderHook, act } from "@testing-library/react";
-
 import useIsSmallScreen from '../hooks/useSmalllScreen';
+import { describe, it } from "vitest";
 describe('useIsSmallScreen', () => {
   it('should return true for small screens', () => {
    

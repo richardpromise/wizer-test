@@ -1,5 +1,5 @@
 import { render, fireEvent } from "@testing-library/react";
-import { vi } from "vitest";
+import { describe, it, vi } from "vitest";
 import NotFound from "../components/404";
 
 describe("NotFound Component", () => {
@@ -8,7 +8,7 @@ describe("NotFound Component", () => {
 
     const { getByText } = render(<NotFound />);
 
-    const button = getByText(/Go to Dashboard/i);
+    const button = getByText(/Go to Dashboard/);
 
     fireEvent.click(button);
 

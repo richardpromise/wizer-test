@@ -6,8 +6,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useMemo, useState } from "react";
 import { fuzzyFilter } from "../helpers/table";
-import { useMemo, useRef, useState } from "react";
 
 interface ITable {
   visibleFields?: any[];
@@ -19,84 +19,49 @@ interface ITable {
 }
 
 const useTable = ({
-  visibleFields,
-  tableData,
-  columnVisibility,
-  search,
+  visibleFields = [],
+  tableData = [],
+  columnVisibility = {},
+  search = "",
   isVisibleFieldsMapped = false,
-  mappedVisibleFields,
+  mappedVisibleFields = [],
 }: ITable) => {
-  const data = useRef(tableData);
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  useMemo(() => {
-    data.current = tableData;
-  }, [tableData]);
-
   const visibleFieldsMapping = useMemo(() => {
-    return isVisibleFieldsMapped
-      ? { columns: mappedVisibleFields }
-      : visibleFields?.reduce(
-          (acc: any, item) => {
-            if (item.name === "s/n") {
-              acc = {
-                columns: [
-                  ...acc.columns,
-                  {
-                    accessorKey: item.name,
-                    enableSorting: item.sortable ?? true,
-                    cell: (prop: any) => prop.row.index + 1,
-                    header: () =>
-                      item.Header ?? (
-                        <span className="capitalize">{item.as}</span>
-                      ),
-                    ...item?.style,
-                  },
-                ],
-                columnVisibility: {
-                  ...acc.columnVisibility,
-                  [item.name]: item.show,
-                },
-              };
-            } else {
-              acc = {
-                columns: [
-                  ...acc.columns,
-                  {
-                    accessorKey: item.name,
-                    enableSorting: item.sortable ?? true,
-                    cell:
-                      item?.customCell ??
-                      ((info: any) => (
-                        <span className="break-all">
-                          {info.getValue() || "N/A"}
-                        </span>
-                      )),
-                    header: () =>
-                      item.Header ?? (
-                        <span className="capitalize">{item.as}</span>
-                      ),
-                    ...item?.style,
-                  },
-                ],
-                columnVisibility: {
-                  ...acc.columnVisibility,
-                  [item.name]: item.show,
-                },
-              };
-            }
+    if (!visibleFields) return { columns: [], columnVisibility: {} };
 
+    return isVisibleFieldsMapped
+      ? { columns: mappedVisibleFields || [] }
+      : visibleFields.reduce(
+          (acc: any, item) => {
+            const column = {
+              accessorKey: item.name,
+              enableSorting: item.sortable ?? true,
+              cell:
+                item.name === "s/n"
+                  ? (prop: any) => prop.row.index + 1
+                  : item?.customCell ??
+                    ((info: any) => (
+                      <span className="break-all">
+                        {info.getValue() || "N/A"}
+                      </span>
+                    )),
+              header: () =>
+                item.Header ?? <span className="capitalize">{item.as}</span>,
+              ...item?.style,
+            };
+
+            acc.columns.push(column);
+            acc.columnVisibility[item.name] = item.show;
             return acc;
           },
-          {
-            columns: [],
-            columnVisibility: {},
-          }
+          { columns: [], columnVisibility: {} }
         );
   }, [isVisibleFieldsMapped, mappedVisibleFields, visibleFields]);
 
   const table = useReactTable({
-    data: data.current,
+    data: tableData,
     columns: visibleFieldsMapping?.columns,
     filterFns: {
       fuzzy: fuzzyFilter,
@@ -116,7 +81,7 @@ const useTable = ({
 
   return {
     table,
-    data: data.current,
+    data: tableData,
   };
 };
 

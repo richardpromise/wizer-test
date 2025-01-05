@@ -1,5 +1,6 @@
 import { renderHook, act } from "@testing-library/react";
 import { useModal } from "../hooks/useModal"; 
+import { describe, expect, it } from "vitest";
 
 describe("useModal hook", () => {
   it("should initialize with modal closed and no config", () => {

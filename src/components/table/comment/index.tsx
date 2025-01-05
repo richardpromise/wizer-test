@@ -68,7 +68,7 @@ export default function CommentsTable({ filteredData, setOpenTreat }: any) {
               onClick={() => navigate(`/comment/${rowId}`)}
               className="text-[#121212] font-medium text-xs md:text-sm tracking-[-0.2px] leading-5 md:leading-6 flex items-center px-2 cursor-pointer"
             >
-              <CgMoreVerticalO color="#8158F3" />
+              <CgMoreVerticalO size={25} color="#8158F3" />
             </span>
           );
         },
